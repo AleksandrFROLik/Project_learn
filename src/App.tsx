@@ -1,26 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react';
+import Counter from "./components/Counter";
+import './styles/App.css'
+import PostItem from "./components/PostItem";
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [posts, setPosts] = useState([
+        {id: 1, title:'JavaScript', body:'Description'},
+        {id: 2, title:'HTML', body:'Description_One'},
+        {id: 3, title:'CSS', body:'Description_Two'},
+    ])
+    return (
+        <div className="App">
+           <PostItem post={{id: 1, title:'JavaScript', body:'Description'}}/>
+           {/*<PostItem/>*/}
+
+            {/*<Counter/>*/}
+        </div>
+    );
 }
 
 export default App;
