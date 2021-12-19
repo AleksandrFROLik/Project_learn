@@ -1,9 +1,16 @@
 import React from 'react';
-import {postItemType} from "../App";
+import { postType} from "../App";
+import MyButton from "./UI/button/MyButton";
 
+export type postItemType = {
+    post: postType,
+    number: number,
+    remove:( post: postType)=>void
 
+}
 
-const PostItem = ({post, number, ...props}:postItemType) => {
+const PostItem = ({post, number,remove, ...props}:postItemType) => {
+
     return (
         <div>
             <div className='post'>
@@ -13,7 +20,7 @@ const PostItem = ({post, number, ...props}:postItemType) => {
                         {post.body}
                     </div>
                 </div>
-                <button className="post_btn">Delete post</button>
+                <MyButton name='Delete' callBack={()=>remove(post)}/>
             </div>
         </div>
     );
