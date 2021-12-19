@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import './styles/App.css'
 import PostList from "./components/PostList";
 import PostForm from "./components/PostForm";
@@ -18,18 +18,20 @@ function App() {
         {id: 2, title: 'HTML', body: 'Description_One'},
         {id: 3, title: 'CSS', body: 'Description_Two'},
     ])
-    const [selected, setSelected] = useState('')
+    const [selected, setSelected] = useState<string>('')
     const [search, setSearch] = useState('')
 
-    const getSortedPost = () => {
-        console.log('function worked')
+    const sortedPost = useMemo(() => {
         if (selected) {
-            // [...posts].sort((a, b) =>( a[selected]).localeCompare(b[selected]))
+            //@ts-ignore
+            [...posts].sort((a, b) => (a[selected]).localeCompare(b[selected]))
         }
         return posts
-    }
+    }, [posts, selected])
 
-    const sortedPost = getSortedPost()
+    const sortAndSearchPost = useMemo(() => {
+        return sortedPost.filter(post => post.title.toLowerCase().includes(search))
+    }, [search, sortedPost])
 
     const addPost = (newPost: postType) => {
         setPosts([...posts, newPost])
@@ -62,8 +64,8 @@ function App() {
                     {value: 'body', name: 'Sort for description'}
                 ]}
             />
-            {posts.length !== 0
-                ? <PostList posts={sortedPost} title={'Post List'} remove={removePost}/>
+            {sortAndSearchPost.length !== 0
+                ? <PostList posts={sortAndSearchPost} title={'Post List'} remove={removePost}/>
                 : <h1 style={{textAlign: "center"}}>Posts not find</h1>
             }
 
