@@ -1,14 +1,28 @@
-import React from 'react';
-import './MyInput.css';
+import React, { DetailedHTMLProps, InputHTMLAttributes} from 'react'
+import './MyInput.css'
 
 
+type DefaultInputPropsType = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
 
-const MyInput = () => {
+type MyInputPropsType = DefaultInputPropsType & {
+
+}
+
+const MyInput: React.FC<MyInputPropsType> = (
+    {
+        ...restProps
+    }
+) => {
+
     return (
         <div>
-            <input className='myInput'/>
-        </div>
-    );
-};
+            <input
+                {...restProps}
+                className='myInput'
+            />
 
-export default MyInput;
+        </div>
+    )
+}
+
+export default MyInput

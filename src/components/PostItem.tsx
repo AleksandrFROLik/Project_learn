@@ -1,12 +1,14 @@
 import React from 'react';
 import {postItemType} from "../App";
 
-const PostItem = ({post,...props}:postItemType) => {
+
+
+const PostItem = ({post, number, ...props}:postItemType) => {
     return (
         <div>
             <div className='post'>
                 <div className='post__content'>
-                    <strong>{post.id}.{post.title}</strong>
+                    <strong>{number}.{post.title}</strong>
                     <div>
                         {post.body}
                     </div>
