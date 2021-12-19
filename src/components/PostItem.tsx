@@ -1,14 +1,5 @@
 import React from 'react';
-
-
-type postType = {
-    id:number,
-    title:string,
-    body: string,
-}
-type postItemType = {
-    post:postType
-}
+import {postItemType} from "../App";
 
 const PostItem = ({post,...props}:postItemType) => {
     return (

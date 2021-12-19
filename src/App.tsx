@@ -1,21 +1,36 @@
 import React, {useState} from 'react';
-import Counter from "./components/Counter";
 import './styles/App.css'
-import PostItem from "./components/PostItem";
+import PostList from "./components/PostList";
+import MyButton from "./components/UI/button/MyButton";
+import MyInput from "./components/UI/input/MyInput";
 
+
+ export type postType = {
+    id:number,
+    title:string,
+    body: string,
+}
+export type postItemType = {
+    post:postType
+}
 
 function App() {
     const [posts, setPosts] = useState([
-        {id: 1, title:'JavaScript', body:'Description'},
-        {id: 2, title:'HTML', body:'Description_One'},
-        {id: 3, title:'CSS', body:'Description_Two'},
+        {id: 1, title: 'JavaScript', body: 'Description'},
+        {id: 2, title: 'HTML', body: 'Description_One'},
+        {id: 3, title: 'CSS', body: 'Description_Two'},
     ])
     return (
         <div className="App">
-           <PostItem post={{id: 1, title:'JavaScript', body:'Description'}}/>
-           {/*<PostItem/>*/}
-
-            {/*<Counter/>*/}
+            <form>
+                <MyInput/>
+                <MyInput/>
+               <MyButton name= 'Add post'/>
+            </form>
+         <PostList
+             posts={posts}
+             title={'Post List'}
+         />
         </div>
     );
 }
