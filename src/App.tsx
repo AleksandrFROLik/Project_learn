@@ -2,8 +2,9 @@ import React, {useMemo, useState} from 'react';
 import './styles/App.css'
 import PostList from "./components/PostList";
 import PostForm from "./components/PostForm";
-import MySelect from "./components/UI/mySelect/MySelect";
-import MyInput from "./components/UI/input/MyInput";
+import PostFilter from "./components/PostFilter";
+import MyModules from "./components/UI/MyModules/MyModules";
+import MyButton from "./components/UI/button/MyButton";
 
 
 export type postType = {
@@ -18,57 +19,40 @@ function App() {
         {id: 2, title: 'HTML', body: 'Description_One'},
         {id: 3, title: 'CSS', body: 'Description_Two'},
     ])
-    const [selected, setSelected] = useState<string>('')
-    const [search, setSearch] = useState('')
+
+    const [filter, setFilter] = useState({sort: '', query: ''})
+    const [module, setModule] = useState(false)
 
     const sortedPost = useMemo(() => {
-        if (selected) {
-            //@ts-ignore
-            [...posts].sort((a, b) => (a[selected]).localeCompare(b[selected]))
+        if (filter.sort) {
+            [...posts].sort((a, b) => (a[filter.sort]).localeCompare(b[filter.sort]))
         }
         return posts
-    }, [posts, selected])
+    }, [posts, filter.sort])
 
     const sortAndSearchPost = useMemo(() => {
-        return sortedPost.filter(post => post.title.toLowerCase().includes(search))
-    }, [search, sortedPost])
+        return sortedPost.filter(post => post.title.toLowerCase().includes(filter.query)) // includes  это функция которая проверяет содержит ли строка записанную подстроку
+    }, [filter.query, sortedPost])
 
     const addPost = (newPost: postType) => {
         setPosts([...posts, newPost])
+        setModule(false)
     }
 
     const removePost = (post: postType) => {
         setPosts(posts.filter(posts => posts.id !== post.id))
     }
 
-    const sortPost = (sort: string) => {
-        console.log(sort)
-        setSelected(sort)
-    }
-
     return (
         <div className="App">
-            <PostForm create={addPost}/>
+            <MyButton  name='Create Post' callBack={()=>setModule(true)}/>
+            <MyModules visible={module} setVisible={setModule}>
+                <PostForm create={addPost}/>
+            </MyModules>
+
             <hr style={{margin: '15px 0'}}/>
-            <MyInput placeholder='Search...'
-                     value={search}
-                     onChange={event => setSearch(event.currentTarget.value)}
-            />
-
-            <MySelect
-                value={selected}
-                onChange={sortPost}
-                defaultValue="Sort for"
-                options={[
-                    {value: 'title', name: 'Sort for name'},
-                    {value: 'body', name: 'Sort for description'}
-                ]}
-            />
-            {sortAndSearchPost.length !== 0
-                ? <PostList posts={sortAndSearchPost} title={'Post List'} remove={removePost}/>
-                : <h1 style={{textAlign: "center"}}>Posts not find</h1>
-            }
-
+            <PostFilter filter={filter} setFilter={setFilter}/>
+            <PostList posts={sortAndSearchPost} title={'Post List'} remove={removePost}/>
         </div>
     );
 }

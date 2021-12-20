@@ -1,5 +1,6 @@
-import React, { DetailedHTMLProps, InputHTMLAttributes} from 'react'
-import './MyInput.css'
+import { DetailedHTMLProps, InputHTMLAttributes} from 'react'
+import React from 'react';
+import style from './MyInput.module.css'
 
 
 type DefaultInputPropsType = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
@@ -18,7 +19,7 @@ const MyInput: React.FC<MyInputPropsType> = (
         <div>
             <input
                 {...restProps}
-                className='myInput'
+                className={style.myInput}
             />
 
         </div>
