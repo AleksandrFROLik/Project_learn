@@ -10,7 +10,7 @@ type myModulesType = DefaultButtonPropsType & {
     setVisible: (visible:boolean)=>void
 }
 
-const MyModules = ({children, visible, ...restProps}:myModulesType) => {
+const MyModules = ({children, visible, setVisible, ...restProps}:myModulesType) => {
 
     const rootClass = [style.myModule]
 
@@ -19,8 +19,12 @@ const MyModules = ({children, visible, ...restProps}:myModulesType) => {
     }
 
     return (
-        <div className={rootClass.join(' ')}>
-            <div className={style.moduleContent}>
+        <div className={rootClass.join(' ')}
+             onClick={()=>setVisible(false)}
+        >
+            <div className={style.moduleContent}
+                 onClick={(e)=>e.stopPropagation()} //stopPropagation  предотвращает всплыте, т.е при клике на на инпуты окно не закроется
+            >
                 {children}
             </div>
         </div>

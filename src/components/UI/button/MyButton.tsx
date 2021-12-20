@@ -4,11 +4,14 @@ import style from './MyButton.module.css';
 
 type DefaultButtonPropsType = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
 
-type MyButtonType = DefaultButtonPropsType & {
+type MyButtonPropsType = DefaultButtonPropsType & {}
 
-}
-
-const MyButton = ({children, ...restProps}:MyButtonType) => {
+const MyButton: React.FC<MyButtonPropsType> = (
+    {
+        children,
+        ...restProps
+    }
+) => {
 
     return (
         <button className={style.btn}

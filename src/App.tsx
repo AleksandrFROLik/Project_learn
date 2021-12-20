@@ -45,8 +45,8 @@ function App() {
 
     return (
         <div className="App">
-            <MyButton style={{marginTop:"15px"}}
-                onClick={()=>setModule(true)}>
+            <MyButton style={{marginTop: "15px"}}
+                      onClick={() => setModule(true)}>
                 Create Post
             </MyButton>
             <MyModules visible={module} setVisible={setModule}>
