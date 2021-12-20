@@ -1,25 +1,25 @@
-import React from 'react';
-import  './MyButton.css';
+import React, {ButtonHTMLAttributes, DetailedHTMLProps} from 'react';
+import style from './MyButton.module.css';
 
-type MyButtonType = {
-    name: string,
-    callBack: ()=> void
+
+type DefaultButtonPropsType = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
+
+type MyButtonType = DefaultButtonPropsType & {
+
 }
 
-const MyButton = ({name, callBack}:MyButtonType) => {
-
-    const onClickHandler = (e:any) => {
-        e.preventDefault()
-        callBack()
-    }
+const MyButton = ({children, ...restProps}:MyButtonType) => {
 
     return (
-        <button className='btn'
-                onClick={(e)=>onClickHandler(e)}
+        <button className={style.btn}
+                {...restProps}
         >
-            {name}
+            {children}
         </button>
+
     );
 };
 
 export default MyButton;
+
+

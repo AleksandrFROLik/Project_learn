@@ -4,14 +4,15 @@ import MyButton from "./UI/button/MyButton";
 import {postType} from "../App";
 
 type postFormType = {
-    create: (newPost:postType)=>void
+    create: (newPost: postType) => void
 }
 
-const PostForm = ({create}:postFormType) => {
+const PostForm = ({create}: postFormType) => {
     const [post, setPost] = useState({title: '', body: ''})
-    const addNewPost = () => {
+    const addNewPost = (e) => {
+        e.preventDefault()
         const newPost = {
-            ...post, id:Date.now()
+            ...post, id: Date.now()
         }
         create(newPost)
         setPost({title: '', body: ''})
@@ -27,10 +28,9 @@ const PostForm = ({create}:postFormType) => {
                      onChange={e => setPost({...post, body: e.currentTarget.value})}
 
             />
-            <MyButton name='Add post'
-                      callBack={addNewPost}
-
-            />
+            <MyButton onClick={addNewPost}>
+                Add Post
+            </MyButton>
         </form>
     );
 };

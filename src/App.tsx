@@ -45,7 +45,10 @@ function App() {
 
     return (
         <div className="App">
-            <MyButton  name='Create Post' callBack={()=>setModule(true)}/>
+            <MyButton style={{marginTop:"15px"}}
+                onClick={()=>setModule(true)}>
+                Create Post
+            </MyButton>
             <MyModules visible={module} setVisible={setModule}>
                 <PostForm create={addPost}/>
             </MyModules>

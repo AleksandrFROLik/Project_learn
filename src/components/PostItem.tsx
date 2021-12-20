@@ -20,7 +20,9 @@ const PostItem = ({post, number,remove, ...props}:postItemType) => {
                         {post.body}
                     </div>
                 </div>
-                <MyButton name='Delete' callBack={()=>remove(post)}/>
+                <MyButton  onClick={()=>remove(post)}>
+                    Delete
+                </MyButton>
             </div>
         </div>
     );
