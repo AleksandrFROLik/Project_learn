@@ -6,7 +6,6 @@ import PostFilter from "./components/PostFilter";
 import MyModules from "./components/UI/MyModules/MyModules";
 import MyButton from "./components/UI/button/MyButton";
 
-
 export type postType = {
     id: number,
     title: string,
@@ -31,7 +30,7 @@ function App() {
     }, [posts, filter.sort])
 
     const sortAndSearchPost = useMemo(() => {
-        return sortedPost.filter(post => post.title.toLowerCase().includes(filter.query)) // includes  это функция которая проверяет содержит ли строка записанную подстроку
+        return sortedPost.filter(post => post.title.toLowerCase().includes(filter.query.toLowerCase())) // includes  это функция которая проверяет содержит ли строка записанную подстроку
     }, [filter.query, sortedPost])
 
     const addPost = (newPost: postType) => {
