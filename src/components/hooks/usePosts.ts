@@ -1,13 +1,13 @@
 import {useMemo} from "react";
 import {postType} from "../../App";
 
-type UseSortedPostsType = {
-    posts: postType[],
-    sort: string,
-    query: string
-}
+// type UseSortedPostsType = {
+//     posts: postType[],
+//     sort: string,
+//     query: string
+// }
 
-export const useSortedPosts = ({posts, sort}: UseSortedPostsType) => {
+export const useSortedPosts = (posts, sort) => {
     const sortedPost = useMemo( () => {
         if (sort) {
             [...posts].sort((a, b) => (a[sort]).localeCompare(b[sort]))
@@ -18,8 +18,8 @@ export const useSortedPosts = ({posts, sort}: UseSortedPostsType) => {
 }
 
 
-export const usePosts = ({posts, sort, query}:UseSortedPostsType) => {
-    //@ts-ignore
+export const usePosts = (posts, sort, query) => {
+
     const sortedPost = useSortedPosts(posts, sort)
     const sortAndSearchPost = useMemo(() => {
         return sortedPost.filter(post => post.title.toLowerCase().includes(query.toLowerCase())) // includes  это функция которая проверяет содержит ли строка записанную подстроку
