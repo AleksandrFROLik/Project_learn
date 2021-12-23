@@ -1,10 +1,13 @@
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import './styles/App.css'
 import PostList from "./components/PostList";
 import PostForm from "./components/PostForm";
 import PostFilter from "./components/PostFilter";
 import MyModules from "./components/UI/MyModules/MyModules";
 import MyButton from "./components/UI/button/MyButton";
+import axios from "axios";
+import PostService from "./components/API/PostService";
+import Loader from "./components/UI/Loader/Loader";
 
 export type postType = {
     id: number,
@@ -21,6 +24,7 @@ function App() {
 
     const [filter, setFilter] = useState({sort: '', query: ''})
     const [module, setModule] = useState(false)
+    const [isPostLoading, setIsPostLoading] = useState(false)
 
     const sortedPost = useMemo(() => {
         if (filter.sort) {
@@ -36,6 +40,20 @@ function App() {
     const addPost = (newPost: postType) => {
         setPosts([...posts, newPost])
         setModule(false)
+    }
+
+    useEffect(() => {
+        fetchPost()
+    },[])
+
+    async function fetchPost() {
+        setIsPostLoading(true)
+        setTimeout(async ()=>{
+            const posts = await PostService.getAll()
+            setPosts(posts)
+            setIsPostLoading(false)
+        }, 3333)
+
     }
 
     const removePost = (post: postType) => {
@@ -54,7 +72,11 @@ function App() {
 
             <hr style={{margin: '15px 0'}}/>
             <PostFilter filter={filter} setFilter={setFilter}/>
-            <PostList posts={sortAndSearchPost} title={'Post List'} remove={removePost}/>
+            {isPostLoading
+                ? <div className='loader'><Loader/></div>
+                :<PostList posts={sortAndSearchPost} title={'Post List'} remove={removePost}/>
+            }
+
         </div>
     );
 }
