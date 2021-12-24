@@ -5,9 +5,10 @@ import PostForm from "./components/PostForm";
 import PostFilter from "./components/PostFilter";
 import MyModules from "./components/UI/MyModules/MyModules";
 import MyButton from "./components/UI/button/MyButton";
-import axios from "axios";
 import PostService from "./components/API/PostService";
 import Loader from "./components/UI/Loader/Loader";
+import {useFetching} from "./components/hooks/useFetching";
+import {usePosts} from "./components/hooks/usePosts";
 
 export type postType = {
     id: number,
@@ -16,26 +17,14 @@ export type postType = {
 }
 
 function App() {
-    const [posts, setPosts] = useState([
-        {id: 1, title: 'JavaScript', body: 'Description'},
-        {id: 2, title: 'HTML', body: 'Description_One'},
-        {id: 3, title: 'CSS', body: 'Description_Two'},
-    ])
-
+    const [posts, setPosts] = useState([])
     const [filter, setFilter] = useState({sort: '', query: ''})
     const [module, setModule] = useState(false)
-    const [isPostLoading, setIsPostLoading] = useState(false)
-
-    const sortedPost = useMemo(() => {
-        if (filter.sort) {
-            [...posts].sort((a, b) => (a[filter.sort]).localeCompare(b[filter.sort]))
-        }
-        return posts
-    }, [posts, filter.sort])
-
-    const sortAndSearchPost = useMemo(() => {
-        return sortedPost.filter(post => post.title.toLowerCase().includes(filter.query.toLowerCase())) // includes  это функция которая проверяет содержит ли строка записанную подстроку
-    }, [filter.query, sortedPost])
+    const sortAndSearchPost= usePosts(posts, filter.sort, filter.query)
+    const [fetchPost, isPostLoading, postError] = useFetching(async () => {
+        const posts = await PostService.getAll()
+        setPosts(posts)
+    })
 
     const addPost = (newPost: postType) => {
         setPosts([...posts, newPost])
@@ -43,18 +32,9 @@ function App() {
     }
 
     useEffect(() => {
+        //@ts-ignore
         fetchPost()
-    },[])
-
-    async function fetchPost() {
-        setIsPostLoading(true)
-        setTimeout(async ()=>{
-            const posts = await PostService.getAll()
-            setPosts(posts)
-            setIsPostLoading(false)
-        }, 3333)
-
-    }
+    }, [])
 
     const removePost = (post: postType) => {
         setPosts(posts.filter(posts => posts.id !== post.id))
@@ -72,9 +52,12 @@ function App() {
 
             <hr style={{margin: '15px 0'}}/>
             <PostFilter filter={filter} setFilter={setFilter}/>
+            {postError &&
+            <h1>Error... ${postError}</h1>
+            }
             {isPostLoading
                 ? <div className='loader'><Loader/></div>
-                :<PostList posts={sortAndSearchPost} title={'Post List'} remove={removePost}/>
+                : <PostList posts={sortAndSearchPost} title={'Post List'} remove={removePost}/>
             }
 
         </div>

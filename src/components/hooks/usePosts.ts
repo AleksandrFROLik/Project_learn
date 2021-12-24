@@ -1,11 +1,4 @@
 import {useMemo} from "react";
-import {postType} from "../../App";
-
-// type UseSortedPostsType = {
-//     posts: postType[],
-//     sort: string,
-//     query: string
-// }
 
 export const useSortedPosts = (posts, sort) => {
     const sortedPost = useMemo( () => {
