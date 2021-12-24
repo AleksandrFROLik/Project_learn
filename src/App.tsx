@@ -9,6 +9,8 @@ import PostService from "./components/API/PostService";
 import Loader from "./components/UI/Loader/Loader";
 import {useFetching} from "./components/hooks/useFetching";
 import {usePosts} from "./components/hooks/usePosts";
+import {GetPageCount, getPagesArray} from "./components/utilse/getPageCount";
+import style from './components/UI/button/MyButton.module.css';
 
 export type postType = {
     id: number,
@@ -20,11 +22,19 @@ function App() {
     const [posts, setPosts] = useState([])
     const [filter, setFilter] = useState({sort: '', query: ''})
     const [module, setModule] = useState(false)
-    const sortAndSearchPost= usePosts(posts, filter.sort, filter.query)
+    const sortAndSearchPost = usePosts(posts, filter.sort, filter.query)
+    const [totalPages, setTotalPage] = useState(0)
+    const [limit, setLimit] = useState(10)
+    const [page, setPage] = useState(1)
+
     const [fetchPost, isPostLoading, postError] = useFetching(async () => {
-        const posts = await PostService.getAll()
-        setPosts(posts)
+        const response = await PostService.getAll(limit, page)
+        setPosts(response.data)
+        const totalCount = +(response.headers['x-total-count'])
+        setTotalPage(GetPageCount(totalCount, limit))
     })
+    let pageArray = getPagesArray(totalPages)
+
 
     const addPost = (newPost: postType) => {
         setPosts([...posts, newPost])
@@ -38,6 +48,12 @@ function App() {
 
     const removePost = (post: postType) => {
         setPosts(posts.filter(posts => posts.id !== post.id))
+    }
+
+    const changePage = (page:number) =>{
+        setPage(page)
+        //@ts-ignore
+        fetchPost()
     }
 
     return (
@@ -59,9 +75,18 @@ function App() {
                 ? <div className='loader'><Loader/></div>
                 : <PostList posts={sortAndSearchPost} title={'Post List'} remove={removePost}/>
             }
+            <div className='pageArray'>
+                {pageArray.map(p =>
+                    <span key={p}
+                          className={page === p ? 'page__current' : 'page'}
+                    onClick={()=>changePage(p)}>{p}</span>)
+                }
+            </div>
 
         </div>
     );
 }
 
 export default App;
+
+
