@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './styles/App.css'
 import PostList from "./components/PostList";
 import PostForm from "./components/PostForm";
@@ -10,7 +10,9 @@ import Loader from "./components/UI/Loader/Loader";
 import {useFetching} from "./components/hooks/useFetching";
 import {usePosts} from "./components/hooks/usePosts";
 import {GetPageCount, getPagesArray} from "./components/utilse/getPageCount";
-import style from './components/UI/button/MyButton.module.css';
+import Pagination from "./components/pagination/Pagination";
+
+
 
 export type postType = {
     id: number,
@@ -44,7 +46,7 @@ function App() {
     useEffect(() => {
         //@ts-ignore
         fetchPost()
-    }, [])
+    }, [page])
 
     const removePost = (post: postType) => {
         setPosts(posts.filter(posts => posts.id !== post.id))
@@ -58,10 +60,12 @@ function App() {
 
     return (
         <div className="App">
+
             <MyButton style={{marginTop: "15px"}}
                       onClick={() => setModule(true)}>
                 Create Post
             </MyButton>
+
             <MyModules visible={module} setVisible={setModule}>
                 <PostForm create={addPost}/>
             </MyModules>
@@ -75,14 +79,10 @@ function App() {
                 ? <div className='loader'><Loader/></div>
                 : <PostList posts={sortAndSearchPost} title={'Post List'} remove={removePost}/>
             }
-            <div className='pageArray'>
-                {pageArray.map(p =>
-                    <span key={p}
-                          className={page === p ? 'page__current' : 'page'}
-                    onClick={()=>changePage(p)}>{p}</span>)
-                }
-            </div>
-
+           <Pagination pageArray={pageArray}
+                       page={page}
+                       changePage={changePage}
+           />
         </div>
     );
 }
