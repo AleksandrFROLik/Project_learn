@@ -83,6 +83,10 @@ function App() {
                        page={page}
                        changePage={changePage}
            />
+            <Pagination pageArray={pageArray}
+                        page={page}
+                        changePage={changePage}
+            />
         </div>
     );
 }
