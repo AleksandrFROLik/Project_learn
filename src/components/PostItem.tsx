@@ -1,5 +1,5 @@
 import React from 'react';
-import { postType } from "../App";
+import { postType } from "../pages/Posts";
 import MyButton from "./UI/button/MyButton";
 
 export type postItemType = {
@@ -19,6 +19,12 @@ const PostItem = ({post, number,remove, ...props}:postItemType) => {
                         {post.body}
                     </div>
                 </div>
+                <MyButton  onClick={()=>remove(post)}>
+                    Open
+                </MyButton>
+                <MyButton  onClick={()=>remove(post)}>
+                    Delete
+                </MyButton>
                 <MyButton  onClick={()=>remove(post)}>
                     Open
                 </MyButton>
