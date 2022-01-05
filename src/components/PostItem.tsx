@@ -1,14 +1,16 @@
 import React from 'react';
-import { postType } from "../pages/Posts";
+import {postType} from "../pages/Posts";
 import MyButton from "./UI/button/MyButton";
+import {useNavigate} from "react-router-dom";
 
 export type postItemType = {
     post: postType,
     number: number,
-    remove:( post: postType)=>void
+    remove: (post: postType) => void
 }
 
-const PostItem = ({post, number,remove, ...props}:postItemType) => {
+const PostItem = ({post, number, remove, ...props}: postItemType) => {
+    const navigate = useNavigate()
 
     return (
         <div>
@@ -19,18 +21,14 @@ const PostItem = ({post, number,remove, ...props}:postItemType) => {
                         {post.body}
                     </div>
                 </div>
-                <MyButton  onClick={()=>remove(post)}>
+                <div className='post__btns'>
+                    <MyButton onClick={() => navigate(`/posts/${post.id}`)}>
                     Open
                 </MyButton>
-                <MyButton  onClick={()=>remove(post)}>
-                    Delete
-                </MyButton>
-                <MyButton  onClick={()=>remove(post)}>
-                    Open
-                </MyButton>
-                <MyButton  onClick={()=>remove(post)}>
-                    Delete
-                </MyButton>
+                    <MyButton onClick={() => remove(post)}>
+                        Delete
+                    </MyButton>
+                </div>
             </div>
         </div>
     );

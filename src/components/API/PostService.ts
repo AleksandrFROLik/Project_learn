@@ -8,7 +8,12 @@ export default class PostService {
                 _page: page
             }
         })
-        return response
+        return response;
         }
 
+    static async getById(id:string) {
+        const response = await axios.get('https://jsonplaceholder.typicode.com/posts/')
+            return response;
+
+    }
 }
