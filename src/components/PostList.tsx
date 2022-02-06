@@ -1,7 +1,7 @@
 import React from 'react';
 import PostItem from "./PostItem";
-import {postType} from "../App";
 import {TransitionGroup, CSSTransition} from "react-transition-group"
+import {postType} from "../pages/Posts";
 
 type PostListType = {
     posts: postType[],

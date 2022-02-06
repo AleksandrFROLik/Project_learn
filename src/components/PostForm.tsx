@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import MyInput from "./UI/input/MyInput";
 import MyButton from "./UI/button/MyButton";
-import {postType} from "../App";
+import { postType } from '../pages/Posts';
+
 
 type postFormType = {
     create: (newPost: postType) => void

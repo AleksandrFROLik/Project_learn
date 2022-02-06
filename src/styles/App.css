@@ -83,5 +83,7 @@
 }
 
 .navbar__links {
+    display: flex;
+    justify-content: space-between;
     margin-left: auto;
 }

@@ -4,8 +4,8 @@ export const GetPageCount = (totalCount, limit) => {
 
 export const getPagesArray = (totalPages:number) => {
     let result:number[] = []
-    for (let i = 0; i <= totalPages; i++) {
-         result.push(i + 1)
+    for (let i = 1; i <= totalPages; i++) {
+         result.push(i)
     }
     return result
 }
