@@ -4,8 +4,7 @@ import {useFetching} from "../components/hooks/useFetching";
 import PostService from "../components/API/PostService";
 import Loader from "../components/UI/Loader/Loader";
 
-const PostIdPage = () => {
-
+ const PostIdPage = () => {
     const params = useParams()
     const [post, setPost] = useState({})
     const [comments, setComments] = useState([])
