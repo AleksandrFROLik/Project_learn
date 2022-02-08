@@ -20,6 +20,7 @@ export type postType = {
 }
 
 export const Posts = () => {
+debugger
     const [posts, setPosts] = useState([])
     const [filter, setFilter] = useState({sort: '', query: ''})
     const [module, setModule] = useState(false)
