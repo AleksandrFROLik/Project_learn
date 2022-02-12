@@ -10,7 +10,7 @@ import {useFetching} from "../components/hooks/useFetching";
 import {usePosts} from "../components/hooks/usePosts";
 import {GetPageCount, getPagesArray} from "../components/utilse/getPageCount";
 import Pagination from "../components/pagination/Pagination";
-
+import MySelect from "../components/UI/mySelect/MySelect";
 
 
 export type postType = {
@@ -20,39 +20,39 @@ export type postType = {
 }
 
 export const Posts = () => {
-debugger
+    debugger
     const [posts, setPosts] = useState([])
     const [filter, setFilter] = useState({sort: '', query: ''})
     const [module, setModule] = useState(false)
     const sortAndSearchPost = usePosts(posts, filter.sort, filter.query)
     const [totalPages, setTotalPage] = useState(0)
-    const [limit, setLimit] = useState(10)
+    const [limit, setLimit] = useState(5)
     const [page, setPage] = useState(1)
-
     const [fetchPost, isPostLoading, postError] = useFetching(async () => {
         const response = await PostService.getAll(limit, page)
-        setPosts(response.data)
+        setPosts([...posts, ...response.data])
         const totalCount = +(response.headers['x-total-count'])
         setTotalPage(GetPageCount(totalCount, limit))
     })
-    let pageArray = getPagesArray(totalPages)
 
+
+    useEffect(() => {
+        //@ts-ignore
+        fetchPost(limit, page)
+    }, [page, limit])
+
+    let pageArray = getPagesArray(totalPages)
 
     const addPost = (newPost: postType) => {
         setPosts([...posts, newPost])
         setModule(false)
     }
 
-    useEffect(() => {
-        //@ts-ignore
-        fetchPost()
-    }, [page])
-
     const removePost = (post: postType) => {
         setPosts(posts.filter(posts => posts.id !== post.id))
     }
 
-    const changePage = (page:number) =>{
+    const changePage = (page: number) => {
         setPage(page)
         //@ts-ignore
         fetchPost()
@@ -72,18 +72,25 @@ debugger
 
             <hr style={{margin: '15px 0'}}/>
             <PostFilter filter={filter} setFilter={setFilter}/>
-            {postError &&
-            <h1>Error... ${postError}</h1>
-            }
-            {isPostLoading
-                ? <div className='loader'><Loader/></div>
-                : <PostList posts={sortAndSearchPost} title={'Post List'} remove={removePost}/>
-            }
+            <MySelect defaultValue='Many elements in page'
+                      options={[
+                {value:' 5', name: '5'},
+                {value: '10', name: '10'},
+                {value: '25', name: '25'},
+                {value: '-1', name: 'all'},
+                      ]}
+                      value={(limit).toString()}
+                      onChange={(value)=>setLimit(+(value))}/>
+
+            {postError && <h1>Error... ${postError}</h1>}
+
+            <PostList posts={sortAndSearchPost} title={'Post List'} remove={removePost}/>
+
+            {isPostLoading && <div className='loader'><Loader/></div>}
             <Pagination pageArray={pageArray}
                         page={page}
                         changePage={changePage}
             />
-
         </div>
     );
 }

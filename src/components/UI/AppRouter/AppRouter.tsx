@@ -16,7 +16,7 @@ const AppRouter = () => {
         return <Loader/>
     }
     return (
-        isAuth === true
+        isAuth
             ? <Routes>
                 <Route path='/about' element={<About/>}/>
                 <Route path='/posts' element={<Posts/>}/>
@@ -27,7 +27,6 @@ const AppRouter = () => {
                  <Route path="*" element={<Navigate to='/login'/>}/>
                  <Route path='/login' element={<Login/>}/>
              </Routes>
-
     );
 };
 

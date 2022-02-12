@@ -3,7 +3,7 @@ import React from 'react';
 type paginationType  = {
     pageArray: number[],
     page: number,
-    changePage:( page: number)=>void
+    changePage:(page: number)=>void
 }
 
 const Pagination = ({pageArray, page, changePage}:paginationType) => {
